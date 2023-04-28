@@ -51,6 +51,10 @@ class authillo {
 	}
 	private _generateCodeChallenge = () => {
 		//
+		const promiseToGenCodeChallenge: Promise<string> = new Promise((res, rej) => {
+			return "yo";
+			//
+		});
 	};
 	private log = (content: any) => {
 		if (this.enableLogs) console.log(content);
