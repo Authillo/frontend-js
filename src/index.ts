@@ -1,3 +1,21 @@
+// export type config = {
+// 	clientId: string;
+// 	clientSecret: string;
+// };
+export type Attribute =
+	| "name"
+	| "age"
+	| "face"
+	| "selfie"
+	| "idphoto"
+	| "email"
+	| "phone"
+	| "license"
+	| "sex"
+	| "birthdate"
+	| "linkedin"
+	| "google"
+	| "instagram";
 /**
  * @param {string} clientId - Unique identifier of your app - for a full explanation of this parameter, visit https://authillo.com/docs/clientId
  * @param {string} defaultRedirectUri - The default url that the user will be redirected back to (on your site/app) after completing the authorization flow. Must exactly match one of the url's provided in your platform configuration. - for a full explanation of this parameter, visit https://authillo.com/docs/defaultRedirectUri
@@ -30,6 +48,16 @@ class authillo {
 	private _generateCodeChallenge = () => {
 		//
 	};
+
+	public begin(
+		infoUserNeedsToVerify: Attribute[],
+		redirectUri?: string,
+		state?: string,
+		maxAge?: number,
+		phoneNumberToAutoFill?: string
+	) {
+		//
+	}
 }
 
 export const Authillo = new authillo();
