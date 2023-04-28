@@ -1,7 +1,3 @@
-// export type config = {
-// 	clientId: string;
-// 	clientSecret: string;
-// };
 export type Attribute =
 	| "name"
 	| "age"
@@ -47,6 +43,7 @@ class authillo {
 	}
 	private _generateCodeChallenge = () => {
 		return new Promise<string>(() => {
+			// TODO- generate a hashed version
 			return "codeChallenge";
 		});
 	};
