@@ -45,6 +45,10 @@ class authillo {
 		if (config.enableLogs != null) this.enableLogs = config.enableLogs;
 		if (config.generateCodeChallenge != null)
 			this._generateCodeChallenge = config.generateCodeChallenge;
+		else {
+			if (this.enforceStrictSecurity === true)
+				throw "missing generateCodeChallenge() parameter, using the default generateCodeChallenge() function is not allowed when enforceStrictSecurity is set to true";
+		}
 	}
 	private initializationIsValid() {
 		return this.clientId != null && this.defaultRedirectUri != null;
