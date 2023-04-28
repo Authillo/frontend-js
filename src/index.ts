@@ -67,10 +67,6 @@ class authillo {
 	) {
 		if (!this.initializationIsValid())
 			throw `invalid configuration -- [make sure .initialize() is run before calling .begin()]`;
-
-		/**
-		 * https://authillo.com/authorize?response_type=code&scope=openid name face linkedin&state=someInfoForLater&redirect_uri=&client_id=yhWHSv9PQ40ZZQGFNlrQbB8W1dqxyQVHpzWAiJFjKrk&max_age=&code_challenge=code_verifier_hash123&code_challenge_method=S256
-		 */
 		this.log("generating code_challenge");
 		const codeChallenge = await this._generateCodeChallenge().catch((reason) => {
 			this.log(`failed to generate code challenge for following reason: ${reason}`);
@@ -88,6 +84,7 @@ class authillo {
 		}&code_challenge=${codeChallenge}&code_challenge_method=S256${
 			phoneNumberToAutoFill != null ? `&autofillPhoneNumber=${phoneNumberToAutoFill}` : ""
 		}`;
+		this.log(`redirecting the user to ${redirectTo} to begin authorization flow`);
 		window.location.href = redirectTo;
 	}
 }
