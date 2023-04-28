@@ -50,17 +50,15 @@ class authillo {
 		return this.clientId != null && this.defaultRedirectUri != null;
 	}
 	private _generateCodeChallenge = () => {
-		//
-		const promiseToGenCodeChallenge: Promise<string> = new Promise((res, rej) => {
-			return "yo";
-			//
+		return new Promise<string>(() => {
+			return "codeChallenge";
 		});
 	};
 	private log = (content: any) => {
 		if (this.enableLogs) console.log(content);
 	};
 
-	public begin(
+	public async begin(
 		infoUserNeedsToVerify: Attribute[],
 		redirectUri?: string,
 		state?: string,
@@ -73,6 +71,12 @@ class authillo {
 		/**
 		 * https://authillo.com/authorize?response_type=code&scope=openid name face linkedin&state=someInfoForLater&redirect_uri=&client_id=yhWHSv9PQ40ZZQGFNlrQbB8W1dqxyQVHpzWAiJFjKrk&max_age=&code_challenge=code_verifier_hash123&code_challenge_method=S256
 		 */
+		this.log("generating code_challenge");
+		const codeChallenge = await this._generateCodeChallenge().catch((reason) => {
+			this.log(`failed to generate code challenge for following reason: ${reason}`);
+			throw reason;
+		});
+		this.log("code_challenge generated");
 		this.log("constucting url to redirect user to in order to begin authorization flow");
 		const scopesString = infoUserNeedsToVerify.reduce((prev, cur) => {
 			return prev + ` ${cur}`;
@@ -84,6 +88,7 @@ class authillo {
 		}&code_challenge=${codeChallenge}&code_challenge_method=S256${
 			phoneNumberToAutoFill != null ? `&autofillPhoneNumber=${phoneNumberToAutoFill}` : ""
 		}`;
+		window.location.href = redirectTo;
 	}
 }
 
