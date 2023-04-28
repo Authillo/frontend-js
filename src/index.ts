@@ -28,14 +28,12 @@ export type config = {
 	defaultRedirectUri: string;
 	enforceStrictSecurity?: boolean;
 	enableLogs?: boolean;
-	generateCodeChallenge?: () => Promise<string>;
 };
 class authillo {
 	private clientId?: string;
 	private defaultRedirectUri?: string;
 	private enforceStrictSecurity: boolean = false;
 	private enableLogs: boolean = false;
-	private codeVerifier?: string;
 	constructor() {}
 	public initialize(config: config) {
 		this.clientId = config.clientId;
@@ -43,12 +41,6 @@ class authillo {
 		if (config.enforceStrictSecurity != null)
 			this.enforceStrictSecurity = config.enforceStrictSecurity;
 		if (config.enableLogs != null) this.enableLogs = config.enableLogs;
-		if (config.generateCodeChallenge != null)
-			this._generateCodeChallenge = config.generateCodeChallenge;
-		else {
-			if (this.enforceStrictSecurity === true)
-				throw "missing generateCodeChallenge() parameter, using the default generateCodeChallenge() function is not allowed when enforceStrictSecurity is set to true";
-		}
 	}
 	private initializationIsValid() {
 		return this.clientId != null && this.defaultRedirectUri != null;
@@ -64,6 +56,7 @@ class authillo {
 
 	public async begin(
 		infoUserNeedsToVerify: Attribute[],
+		codeChallenge?: string,
 		redirectUri?: string,
 		state?: string,
 		maxAge?: number,
@@ -72,10 +65,14 @@ class authillo {
 		if (!this.initializationIsValid())
 			throw `invalid configuration -- [make sure .initialize() is run before calling .begin()]`;
 		this.log("generating code_challenge");
-		const codeChallenge = await this._generateCodeChallenge().catch((reason) => {
-			this.log(`failed to generate code challenge for following reason: ${reason}`);
-			throw reason;
-		});
+		if (codeChallenge == null) {
+			if (this.enforceStrictSecurity === true)
+				throw "missing codeChallenge parameter, ( codeChallenge parameter must be provided when enforceStrictSecurity is set to true";
+			codeChallenge = await this._generateCodeChallenge().catch((reason) => {
+				this.log(`failed to generate code challenge for following reason: ${reason}`);
+				throw reason;
+			});
+		}
 		this.log("code_challenge generated");
 		this.log("constucting url to redirect user to in order to begin authorization flow");
 		const scopesString = infoUserNeedsToVerify.reduce((prev, cur) => {
