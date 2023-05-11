@@ -42,9 +42,9 @@ class authillo {
 		return this.clientId != null && this.defaultRedirectUri != null;
 	}
 	private _generateCodeChallenge = () => {
-		return new Promise<string>(() => {
+		return new Promise<string>((resolve, reject) => {
 			// TODO- generate a hashed version
-			return "codeChallenge";
+			resolve("codeChallenge");
 		});
 	};
 	private log = (content: any) => {
