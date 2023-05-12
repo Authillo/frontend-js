@@ -48,8 +48,8 @@ class authillo {
 	}
 	private _generateCodeChallenge = () => {
 		return new Promise<string>((resolve, reject) => {
-			// TODO- generate a hashed version
-			resolve("codeChallenge");
+			// return hash of "unsafeCodeVerifier" which is "EPOUnM9d4bXpIBboq-OQZ36Nu3vbwCdmCheHLUWtr-M"
+			resolve("EPOUnM9d4bXpIBboq-OQZ36Nu3vbwCdmCheHLUWtr-M");
 		});
 	};
 	private log = (content: any) => {
