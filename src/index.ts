@@ -100,6 +100,10 @@ class authillo {
 		window.location.href = redirectTo;
 	}
 
+	/**
+	 * utility function that parses the code & state query parameters from the url once the user is redirected back to your site
+	 * @returns an object with the authorizationCode and state for the given user
+	 */
 	public parseResultsFromQueryString = () => {
 		const queryParams = new URLSearchParams(window.location.search);
 		const code = queryParams.get("code");
