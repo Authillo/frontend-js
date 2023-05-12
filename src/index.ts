@@ -1,4 +1,3 @@
-export * from "./utils/index";
 export type Attribute =
 	| "name"
 	| "age"
@@ -32,6 +31,11 @@ class authillo {
 	private enforceStrictSecurity: boolean = false;
 	private enableLogs: boolean = false;
 	constructor() {}
+
+	/**
+	 * @description The first step to set up and use the Authillo class - We recommend you call this function at the begining of your frontend javascript code excecution (you'll likely call this function in an index.(some-file-extension) file )
+	 * @param config Object that acts to initialize the Authillo package with your platform's settings - for a full explanation of this parameter, visit https://authillo.com/docs/config
+	 */
 	public initialize(config: config) {
 		this.clientId = config.clientId;
 		this.defaultRedirectUri = config.defaultRedirectUri;
@@ -52,6 +56,15 @@ class authillo {
 		if (this.enableLogs) console.log(content);
 	};
 
+	/**
+	 * Function that initiates the Authillo verification / login flow by redirecting the user to authillo's site
+	 * @param infoUserNeedsToVerify - The aspects of the user's identity that they'll be required to verify once they reach Authillo's site
+	 * @param codeChallenge - (Required if enforceStrictSecurity is set to true) - for a full explanation of this parameter, visit https://authillo.com/docs/codeChallenge
+	 * @param redirectUri - The url that Authillo will redirect the user back to. Must exactly match one of the url's provided in your platform configuration.
+	 * @param state - A string that will be included in the query parameters of the user when redirected back. This can be used to store some state relevant to the user between redirects (ex: the page they were on before logging in).
+	 * @param maxAge - How long the ID token should be valid for in seconds
+	 * @param phoneNumberToAutoFill - A phone number to autofill in the phone number field. This should be used when the user has already provided their phone number to your application and should only be included on the first request. If the user has already entered a phone number or already has an Authillo account, this will be ignored.
+	 */
 	public async begin(
 		infoUserNeedsToVerify: Attribute[],
 		codeChallenge?: string,
@@ -86,6 +99,13 @@ class authillo {
 		this.log(`redirecting the user to ${redirectTo} to begin authorization flow`);
 		window.location.href = redirectTo;
 	}
+
+	public parseResultsFromQueryString = () => {
+		const queryParams = new URLSearchParams(window.location.search);
+		const code = queryParams.get("code");
+		const state = queryParams.get("state");
+		return { code, state };
+	};
 }
 
 export const Authillo = new authillo();
