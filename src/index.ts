@@ -1,3 +1,4 @@
+export * from "./utils/index";
 export type Attribute =
 	| "name"
 	| "age"
