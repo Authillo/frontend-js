@@ -1,13 +1,12 @@
 {
 	"name": "@authillo/frontend-js",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"description": "Frontend package to help accelerate authillo integration for javascript (or typescript) based frontends",
 	"main": "dist/cjs/index.js",
 	"module": "dist/mjs/index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "tsc",
-		"safeBuild": "rm -fr dist/* && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && bash ./fixup"
+		"build": "rm -fr dist/* && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && bash ./fixup"
 	},
 	"repository": {
 		"type": "git",
