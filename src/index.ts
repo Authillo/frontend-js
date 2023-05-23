@@ -138,10 +138,10 @@ class authillo {
     window.addEventListener(
       "message",
       async (event) => {
-        if (event.origin !== "http://localhost:4200") return;
+        if (event.origin !== "https://embed.authillo.com") return;
 
         const dataFromAuthillo = event?.data;
-        const res = await fetch("http://localhost:3000/frontendjsidentify", {
+        const res = await fetch("https://api.authillo.com/frontendjsidentify", {
           method: "POST",
           body: JSON.stringify({
             platformId: this.clientId,
@@ -156,7 +156,7 @@ class authillo {
     );
 
     const iframe = document.createElement("iframe");
-    iframe.src = `http://localhost:4200/iframe/frontendjsidentify?platformId=${this.clientId}`;
+    iframe.src = `https://embed.authillo.com/frontendjsidentify?platformId=${this.clientId}`;
     iframe.style.height = "0px";
     iframe.style.width = "0px";
     iframe.style.display = "none";
